@@ -25,6 +25,7 @@ async function run() {
     //collection with mongodb
     const serviceCollection = client.db("carServices").collection("service");
     const orderCollection = client.db("carServices").collection("orders");
+    const bookingCollection = client.db("carServices").collection("booking");
 
     app.get("/services", async (req, res) => {
       const query = {};
@@ -67,6 +68,21 @@ async function run() {
         const result = await orderCollection.deleteOne(query);
         res.send(result);
     })
+
+    //post appointment data from booking collection
+    app.post('/bookings', async (req, res) => {
+      const booking = req.body;
+      console.log(booking);
+      const result = await bookingCollection.insertOne(booking);
+      res.send(result);
+    })
+    
+    // //get appointment data from booking collection
+    // app.get('/appointment', async (req, res) => {
+    //   const query = {};
+    //   const options = await bookingCollection.find(query).toArray();
+    //   res.send(options);
+    // })
 
   } 
   finally {
